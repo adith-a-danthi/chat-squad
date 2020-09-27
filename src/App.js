@@ -83,9 +83,9 @@ function ChatRoom() {
   }
 
   return (<>
-    <div>
+    <main>
       {messages && messages.map(msg => <ChatMessage key={msg.id} message={msg}/>)}
-    </div>
+    </main>
 
     <form onSubmit={sendMessage}>
       <input value={formValue} onChange={(e) => setFormValue(e.target.value)} placeholder="Type a message"/>
@@ -101,7 +101,7 @@ function ChatMessage(props) {
 
   return (<>
     <div className={`message ${messageClass}`}>
-      <img src={photoURL} alt="Profile Photo"/>
+      <img src={photoURL || 'https://api.adorable.io/avatars/23/abott@adorable.png'} alt="Profile Photo"/>
       <p>{text}</p>
     </div>
   </>)
