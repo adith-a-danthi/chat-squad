@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import './App.css';
 
 import firebase from 'firebase/app';
@@ -60,6 +60,7 @@ function SignOut() {
 }
 
 function ChatRoom() {
+  const scroll = useRef();
   const messagesRef = firestore.collection('messages');
   const query = messagesRef.orderBy('createdAt').limit(25);
 
@@ -80,16 +81,18 @@ function ChatRoom() {
     })
 
     setFormValue('');
+    scroll.current.scrollIntoView({behaviour:'smooth'});
   }
 
   return (<>
     <main>
       {messages && messages.map(msg => <ChatMessage key={msg.id} message={msg}/>)}
+      <span ref={scroll}></span>
     </main>
 
     <form onSubmit={sendMessage}>
       <input value={formValue} onChange={(e) => setFormValue(e.target.value)} placeholder="Type a message"/>
-      <button type="submit" disabled={!formValue}>🚀</button>
+      <button type="submit" disabled={!formValue}><span role="img" aria-label="send">🚀</span></button>
     </form>
 
   </>)
@@ -101,7 +104,7 @@ function ChatMessage(props) {
 
   return (<>
     <div className={`message ${messageClass}`}>
-      <img src={photoURL || 'https://api.adorable.io/avatars/23/abott@adorable.png'} alt="Profile Photo"/>
+      <img src={photoURL || 'https://api.adorable.io/avatars/23/abott@adorable.png'} alt=""/>
       <p>{text}</p>
     </div>
   </>)
